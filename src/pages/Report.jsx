@@ -426,8 +426,9 @@ const Report = () => {
             <span className="text-[11px] font-mono text-slate-600 font-bold">8 Mandatory Checks</span>
           </div>
 
-          <table className="w-full text-xs border-collapse border border-slate-300 shadow-sm">
-            <thead>
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-xs border-collapse border border-slate-300 shadow-sm min-w-[600px]">
+              <thead>
               <tr className="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider">
                 <th className="border border-slate-300 p-2.5 text-left w-1/4">Statutory Clause &amp; Field</th>
                 <th className="border border-slate-300 p-2.5 text-left w-2/5">Extracted Value from Label Evidence</th>
@@ -486,8 +487,9 @@ const Report = () => {
               Based on the measured Principal Display Panel surface area of <strong>{product?.pdpAreaCm2 || 220} cm²</strong> (Classification Band: 100 cm² &lt; A ≤ 500 cm²), the statutory minimum numeral &amp; letter heights are evaluated below:
             </p>
 
-            <table className="w-full text-xs border-collapse border border-slate-300 shadow-sm">
-              <thead>
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-xs border-collapse border border-slate-300 shadow-sm min-w-[500px]">
+                <thead>
                 <tr className="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider">
                   <th className="border border-slate-300 p-2.5 text-left">Packaging Element</th>
                   <th className="border border-slate-300 p-2.5 text-left">Statutory Rule Ref</th>

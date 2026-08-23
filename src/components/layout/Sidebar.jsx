@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ScanLine, FileText, History, Settings } from 'lucide-react';
+import { LayoutDashboard, ScanLine, FileText, History, Settings, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, closeMenu }) => {
   const { role } = useAuth();
   
   const navItems = [
@@ -18,13 +18,20 @@ const Sidebar = () => {
   }
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col h-[calc(100vh-4rem)] sticky top-16 shadow-sm z-40">
-      <div className="p-4 flex-1">
+    <aside className={`bg-white border-r border-slate-200 flex flex-col h-[calc(100vh-4rem)] md:sticky md:top-0 shadow-sm z-40 transition-transform duration-300 md:translate-x-0 fixed inset-y-0 left-0 w-72 md:w-64 mt-16 md:mt-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className="p-4 flex items-center justify-between md:hidden border-b border-slate-100">
+        <span className="font-bold text-slate-800">Menu</span>
+        <button onClick={closeMenu} className="p-2 bg-slate-100 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-200">
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+      <div className="p-4 flex-1 overflow-y-auto">
         <ul className="space-y-2">
           {navItems.map((item) => (
             <li key={item.path}>
               <NavLink
                 to={item.path}
+                onClick={closeMenu}
                 className={({ isActive }) => 
                   `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
                     isActive 

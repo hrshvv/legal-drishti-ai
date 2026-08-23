@@ -329,7 +329,7 @@ const Scanner = () => {
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onClick={() => fileInputRef.current?.click()}
-                  className={`flex-1 border-2 border-dashed rounded-3xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all min-h-[280px] relative ${
+                  className={`flex-1 border-2 border-dashed rounded-3xl p-6 md:p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all min-h-[280px] relative ${
                     isDragOver 
                       ? 'border-primary-500 bg-primary-50/70 scale-[0.99] shadow-inner' 
                       : uploadedImageSrc
@@ -717,8 +717,8 @@ const Scanner = () => {
                     <span className="text-[11px] text-slate-400 font-semibold">9 Declarations Audit</span>
                   </div>
 
-                  <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 text-xs">
-                    <table className="w-full text-left">
+                  <div className="border border-slate-200 rounded-2xl overflow-x-auto bg-slate-50 text-xs">
+                    <table className="w-full text-left min-w-[300px]">
                       <tbody>
                         {selectedProduct.declarations && Object.entries(selectedProduct.declarations).map(([key, val]) => (
                           <tr key={key} className="border-b border-slate-200 last:border-0 hover:bg-white transition-colors">
@@ -743,8 +743,8 @@ const Scanner = () => {
                       Schedule II Font Height in Millimeters
                     </h4>
 
-                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 text-xs">
-                      <table className="w-full text-left">
+                    <div className="border border-slate-200 rounded-2xl overflow-x-auto bg-slate-50 text-xs">
+                      <table className="w-full text-left min-w-[400px]">
                         <thead className="bg-slate-100 text-slate-600 font-bold border-b border-slate-200 text-[11px]">
                           <tr>
                             <th className="py-2 px-3">Field</th>

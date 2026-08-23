@@ -1,9 +1,9 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { LogOut, ShieldCheck } from 'lucide-react';
+import { LogOut, ShieldCheck, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ toggleMobileMenu }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -13,8 +13,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-50 shadow-sm">
+    <nav className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 sticky top-0 z-50 shadow-sm w-full">
       <div className="flex items-center gap-3">
+        <button 
+          className="p-2 -ml-2 text-slate-500 hover:text-slate-800 md:hidden flex items-center justify-center rounded-lg hover:bg-slate-50 transition-colors"
+          onClick={toggleMobileMenu}
+        >
+          <Menu className="w-6 h-6" />
+        </button>
         <div className="bg-primary-600 p-2 rounded-lg shadow-md shadow-primary-500/20">
           <ShieldCheck className="text-white w-6 h-6" />
         </div>
