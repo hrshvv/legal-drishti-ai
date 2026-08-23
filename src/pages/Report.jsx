@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockProducts, generateCustomImageAnalysis } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
@@ -15,7 +15,7 @@ import {
   Scale, 
   FileText, 
   Camera, 
-  Check
+  Package
 } from 'lucide-react';
 
 const Report = () => {
@@ -26,7 +26,7 @@ const Report = () => {
   const reportRef = useRef();
 
   // Find product from activeProduct, scanHistory, mockProducts, or fallback
-  const getResolvedProduct = () => {
+  const product = useMemo(() => {
     if (activeProduct && (activeProduct.id === productId || !productId)) {
       return activeProduct;
     }
@@ -45,12 +45,29 @@ const Report = () => {
     }
 
     return mockProducts[0];
-  };
+  }, [productId, activeProduct, scanHistory]);
 
-  const product = getResolvedProduct();
+  // Stable Certificate ID based on product properties
+  const certId = useMemo(() => {
+    const seed = (product?.id || '001') + (product?.batchNo || 'BATCH');
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+      hash |= 0;
+    }
+    return `LM-${Math.abs(hash % 900000) + 100000}`;
+  }, [product?.id, product?.batchNo]);
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/history');
+    }
   };
 
   const generateEvidenceHash = (id, batch) => {
@@ -73,16 +90,36 @@ const Report = () => {
     }
   };
 
+  // Helper to determine field status considering violations
+  const getFieldStatus = (key, label) => {
+    const val = product?.declarations?.[key];
+    if (!val || val === 'NOT DECLARED' || val.includes('NOT DECLARED')) {
+      return { status: 'fail', badge: 'MISSING' };
+    }
+    // Check if any violation matches this field
+    const matchedViolation = product?.violations?.find(v => 
+      v.field?.toLowerCase().includes(key.toLowerCase()) || 
+      label.toLowerCase().includes(v.field?.toLowerCase() || '') ||
+      (v.field && key.toLowerCase().includes(v.field.toLowerCase()))
+    );
+    if (matchedViolation) {
+      if (matchedViolation.severity === 'critical') {
+        return { status: 'fail', badge: 'NON-CONFORMING' };
+      }
+      return { status: 'warning', badge: 'SUB-MINIMUM FONT' };
+    }
+    return { status: 'pass', badge: 'PASS' };
+  };
+
   // Statutory Declarations Checklist definitions with applicable legal rules
-  const statutoryDeclarationsList = [
+  const rawDeclarations = [
     {
       key: 'mrp',
       label: 'Maximum Retail Price (MRP)',
       rule: 'Rule 6(1)(e)',
       actRef: 'LMPCR 2011',
       requirement: 'Mandatory syntax: "MRP ₹ xx.xx (incl. of all taxes)"',
-      value: product?.declarations?.mrp || 'NOT DECLARED',
-      status: (product?.declarations?.mrp && product?.declarations?.mrp !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.mrp || 'NOT DECLARED'
     },
     {
       key: 'unitSalePrice',
@@ -90,8 +127,7 @@ const Report = () => {
       rule: 'Rule 6(1)(ab)',
       actRef: 'GSR 779(E) 2021',
       requirement: 'Mandatory per g/ml (if <1kg/1L) or per kg/L (if >1kg/1L)',
-      value: product?.declarations?.unitSalePrice || 'NOT DECLARED',
-      status: (product?.declarations?.unitSalePrice && product?.declarations?.unitSalePrice !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.unitSalePrice || 'NOT DECLARED'
     },
     {
       key: 'netWeight',
@@ -99,8 +135,7 @@ const Report = () => {
       rule: 'Rule 6(1)(c) & Rule 12',
       actRef: 'Schedule I & II',
       requirement: 'Standard unit of mass/volume in standard metric symbols (g, kg, ml, l)',
-      value: product?.declarations?.netWeight || 'NOT DECLARED',
-      status: (product?.declarations?.netWeight && product?.declarations?.netWeight !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.netWeight || 'NOT DECLARED'
     },
     {
       key: 'manufacturer',
@@ -108,8 +143,7 @@ const Report = () => {
       rule: 'Rule 6(1)(a) & Rule 10',
       actRef: 'LMPCR 2011',
       requirement: 'Complete postal address with Pin Code & State of manufacturer or packer',
-      value: product?.declarations?.manufacturer || 'NOT DECLARED',
-      status: (product?.declarations?.manufacturer && product?.declarations?.manufacturer !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.manufacturer || 'NOT DECLARED'
     },
     {
       key: 'countryOfOrigin',
@@ -117,8 +151,7 @@ const Report = () => {
       rule: 'Rule 6(1)(aa)',
       actRef: 'GSR 592(E) 2017',
       requirement: 'Mandatory conspicuous declaration of country of manufacture or assembly',
-      value: product?.declarations?.countryOfOrigin || 'NOT DECLARED',
-      status: (product?.declarations?.countryOfOrigin && product?.declarations?.countryOfOrigin !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.countryOfOrigin || 'NOT DECLARED'
     },
     {
       key: 'expiryDate',
@@ -126,8 +159,7 @@ const Report = () => {
       rule: 'Rule 6(1)(d)',
       actRef: 'LMPCR 2011',
       requirement: 'Month & Year of manufacture/packing + expiry date for perishable consumables',
-      value: product?.declarations?.expiryDate || 'NOT DECLARED',
-      status: (product?.declarations?.expiryDate && product?.declarations?.expiryDate !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.expiryDate || 'NOT DECLARED'
     },
     {
       key: 'customerCare',
@@ -135,8 +167,7 @@ const Report = () => {
       rule: 'Rule 6(1)(f)',
       actRef: 'LMPCR 2011',
       requirement: 'Designated official name/address, telephone helpline, and email ID',
-      value: product?.declarations?.customerCare || 'NOT DECLARED',
-      status: (product?.declarations?.customerCare && product?.declarations?.customerCare !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.customerCare || 'NOT DECLARED'
     },
     {
       key: 'fssaiNo',
@@ -144,44 +175,79 @@ const Report = () => {
       rule: 'FSSAI Act / Rule 27',
       actRef: 'FSS Act 2006',
       requirement: '14-digit FSSAI registration & Legal Metrology registration number',
-      value: product?.declarations?.fssaiNo || 'NOT DECLARED',
-      status: (product?.declarations?.fssaiNo && product?.declarations?.fssaiNo !== 'NOT DECLARED') ? 'pass' : 'fail'
+      value: product?.declarations?.fssaiNo || 'NOT DECLARED'
     }
   ];
+
+  const statutoryDeclarationsList = rawDeclarations.map(item => {
+    const verdict = getFieldStatus(item.key, item.label);
+    return { ...item, ...verdict };
+  });
+
+  // All commodities for fast switcher
+  const allCommodities = useMemo(() => {
+    const items = [...mockProducts];
+    if (scanHistory && Array.isArray(scanHistory)) {
+      scanHistory.forEach(s => {
+        if (s && !items.find(i => i.id === s.id)) {
+          items.push(s);
+        }
+      });
+    }
+    return items;
+  }, [scanHistory]);
 
   return (
     <div className="max-w-5xl mx-auto pb-16">
       
       {/* Top Navigation & Action Controls Bar */}
-      <div className="flex flex-wrap justify-between items-center gap-4 mb-6 print:hidden">
-        <button 
-          onClick={() => navigate(-1)} 
-          className="btn-outline py-2 text-sm border-slate-300 bg-white hover:bg-slate-50 text-slate-700 shadow-sm"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back
-        </button>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 print:hidden">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button 
+            onClick={handleBack} 
+            className="btn-outline py-2 px-3 text-sm border-slate-300 bg-white hover:bg-slate-50 text-slate-700 shadow-sm flex items-center gap-1.5"
+          >
+            <ArrowLeft className="w-4 h-4" /> <span>Back</span>
+          </button>
 
-        <div className="flex flex-wrap items-center gap-3">
+          {/* Quick Commodity Switcher */}
+          <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-xl px-3 py-1.5 shadow-sm text-xs flex-1 sm:flex-initial">
+            <Package className="w-4 h-4 text-primary-600 shrink-0" />
+            <select
+              value={product?.id || ''}
+              onChange={(e) => navigate(`/report/${e.target.value}`)}
+              className="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer w-full"
+            >
+              {allCommodities.map(item => (
+                <option key={item.id} value={item.id}>
+                  {item.brand} - {item.name} ({item.complianceScore}%)
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
           <button 
             onClick={handleDownloadJSON} 
-            className="btn-outline py-2 text-sm bg-white hover:bg-slate-50 border-slate-300 text-slate-700 shadow-sm"
+            className="btn-outline py-2 px-3 text-sm bg-white hover:bg-slate-50 border-slate-300 text-slate-700 shadow-sm flex items-center gap-1.5"
             title="Download machine-readable JSON data"
           >
-            <Download className="w-4 h-4 text-slate-600" /> Export JSON
+            <Download className="w-4 h-4 text-slate-600" /> <span>Export JSON</span>
           </button>
           
           <button 
             onClick={handlePrint} 
-            className="btn-primary py-2 px-5 text-sm shadow-md flex items-center gap-2"
+            className="btn-primary py-2 px-4 text-sm shadow-md flex items-center gap-2"
           >
-            <Printer className="w-4 h-4" /> Print / Save Official PDF
+            <Printer className="w-4 h-4" /> <span>Print / Save PDF</span>
           </button>
         </div>
       </div>
 
       {/* Printable Report Paper Sheet Container */}
       <div 
-        className="bg-white text-slate-900 p-8 md:p-12 rounded-2xl shadow-2xl relative border border-slate-300 print:p-4 print:border-none print:shadow-none font-sans"
+        className="bg-white text-slate-900 p-6 sm:p-8 md:p-12 rounded-2xl shadow-xl relative border border-slate-300 print:p-0 print:border-none print:shadow-none font-sans"
         ref={reportRef}
       >
         
@@ -189,32 +255,32 @@ const Report = () => {
         {/* HEADER: GOVT. OF INDIA STATUTORY LETTERHEAD */}
         {/* ========================================================================= */}
         <div className="border-b-2 border-slate-900 pb-6 mb-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             
-            <div className="flex items-center gap-4 text-center sm:text-left">
+            <div className="flex items-center gap-4 text-left">
               {/* National Emblem Badge */}
-              <div className="w-16 h-16 rounded-full border-2 border-slate-800 bg-slate-50 flex flex-col items-center justify-center p-1 shrink-0 shadow-sm">
-                <Scale className="w-6 h-6 text-slate-900 mb-0.5" />
-                <span className="text-[7px] font-black uppercase text-slate-900 tracking-tighter leading-none">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-slate-800 bg-slate-50 flex flex-col items-center justify-center p-1 shrink-0 shadow-sm">
+                <Scale className="w-5 h-5 sm:w-6 sm:h-6 text-slate-900 mb-0.5" />
+                <span className="text-[7px] font-black uppercase text-slate-900 tracking-tighter leading-none text-center">
                   GOVT OF INDIA
                 </span>
               </div>
 
               <div>
-                <h1 className="text-xl md:text-2xl font-black uppercase tracking-wide text-slate-900 font-display">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-black uppercase tracking-wide text-slate-900 font-display leading-tight">
                   Ministry of Consumer Affairs, Food &amp; Public Distribution
                 </h1>
-                <h2 className="text-xs md:text-sm font-bold uppercase tracking-wider text-slate-700">
+                <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700 mt-0.5">
                   Department of Consumer Affairs • Legal Metrology Division
                 </h2>
-                <p className="text-[11px] font-semibold text-primary-900 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-primary-900 mt-0.5">
                   Statutory Packaging Inspection &amp; Metrological Verification Audit (LMPCR 2011)
                 </p>
               </div>
             </div>
 
             {/* Reference & Audit Badge */}
-            <div className="text-right text-xs bg-slate-50 p-3 rounded-lg border border-slate-300 shrink-0 min-w-[210px] space-y-1">
+            <div className="text-right text-xs bg-slate-50 p-3 rounded-lg border border-slate-300 shrink-0 w-full md:w-auto min-w-[210px] space-y-1">
               <div className="flex justify-between gap-2">
                 <span className="text-slate-500 font-semibold">Report Ref:</span>
                 <strong className="font-mono text-slate-900">LM-AUD-{product?.batchNo || '2026-X'}</strong>
@@ -236,7 +302,7 @@ const Report = () => {
           </div>
 
           {/* Legal Framework Header Banner */}
-          <div className="mt-4 bg-slate-100 px-3 py-1.5 rounded text-[11px] font-mono text-slate-700 flex flex-wrap justify-between items-center gap-2 border border-slate-200">
+          <div className="mt-4 bg-slate-100 px-3 py-1.5 rounded text-[10px] sm:text-[11px] font-mono text-slate-700 flex flex-wrap justify-between items-center gap-2 border border-slate-200">
             <span><strong>Governing Statute:</strong> Legal Metrology Act, 2009 (Act 1 of 2010) r/w Legal Metrology (Packaged Commodities) Rules, 2011</span>
             <span className="font-bold text-slate-900">Audit Protocol: Schedule II Optical Verification</span>
           </div>
@@ -295,7 +361,7 @@ const Report = () => {
         {/* ========================================================================= */}
         {/* SECTION 2: PRIMARY EVIDENTIARY PACKAGING RECORD (UPLOADED / SCANNED IMAGE) */}
         {/* ========================================================================= */}
-        <div className="mb-8 page-break-inside-avoid">
+        <div className="mb-8 break-inside-avoid">
           <div className="flex items-center justify-between bg-slate-100 px-3 py-2 border-l-4 border-slate-900 mb-3">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
               <Camera className="w-4 h-4 text-primary-700" />
@@ -417,7 +483,7 @@ const Report = () => {
         {/* ========================================================================= */}
         {/* SECTION 3: MANDATORY STATUTORY DECLARATIONS AUDIT (RULE 6(1)) */}
         {/* ========================================================================= */}
-        <div className="mb-8">
+        <div className="mb-8 break-inside-avoid">
           <div className="flex items-center justify-between bg-slate-100 px-3 py-2 border-l-4 border-slate-900 mb-3">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
               <FileText className="w-4 h-4 text-primary-700" />
@@ -429,52 +495,55 @@ const Report = () => {
           <div className="overflow-x-auto w-full">
             <table className="w-full text-xs border-collapse border border-slate-300 shadow-sm min-w-[600px]">
               <thead>
-              <tr className="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider">
-                <th className="border border-slate-300 p-2.5 text-left w-1/4">Statutory Clause &amp; Field</th>
-                <th className="border border-slate-300 p-2.5 text-left w-2/5">Extracted Value from Label Evidence</th>
-                <th className="border border-slate-300 p-2.5 text-left w-1/4">Mandatory Legal Requirement</th>
-                <th className="border border-slate-300 p-2.5 text-center w-20">Verdict</th>
-              </tr>
-            </thead>
-            <tbody>
-              {statutoryDeclarationsList.map((item, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="border border-slate-300 p-2.5 align-top">
-                    <strong className="text-slate-900 block">{item.label}</strong>
-                    <span className="text-[10px] font-mono text-primary-700 font-bold">{item.rule} ({item.actRef})</span>
-                  </td>
-                  <td className="border border-slate-300 p-2.5 align-top font-mono text-slate-800">
-                    {item.value === 'NOT DECLARED' ? (
-                      <span className="text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
-                        ❌ MISSING / NOT DECLARED
-                      </span>
-                    ) : (
-                      <span className="font-semibold">{item.value}</span>
-                    )}
-                  </td>
-                  <td className="border border-slate-300 p-2.5 align-top text-slate-600 text-[11px]">
-                    {item.requirement}
-                  </td>
-                  <td className="border border-slate-300 p-2.5 text-center align-middle">
-                    <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
-                      item.status === 'pass'
-                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                        : 'bg-red-100 text-red-800 border border-red-300'
-                    }`}>
-                      {item.status === 'pass' ? 'PASS' : 'FAIL'}
-                    </span>
-                  </td>
+                <tr className="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider">
+                  <th className="border border-slate-300 p-2.5 text-left w-1/4">Statutory Clause &amp; Field</th>
+                  <th className="border border-slate-300 p-2.5 text-left w-2/5">Extracted Value from Label Evidence</th>
+                  <th className="border border-slate-300 p-2.5 text-left w-1/4">Mandatory Legal Requirement</th>
+                  <th className="border border-slate-300 p-2.5 text-center w-24">Verdict</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {statutoryDeclarationsList.map((item, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="border border-slate-300 p-2.5 align-top">
+                      <strong className="text-slate-900 block">{item.label}</strong>
+                      <span className="text-[10px] font-mono text-primary-700 font-bold">{item.rule} ({item.actRef})</span>
+                    </td>
+                    <td className="border border-slate-300 p-2.5 align-top font-mono text-slate-800">
+                      {item.value === 'NOT DECLARED' ? (
+                        <span className="text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded border border-red-200 inline-block">
+                          ❌ MISSING / NOT DECLARED
+                        </span>
+                      ) : (
+                        <span className="font-semibold">{item.value}</span>
+                      )}
+                    </td>
+                    <td className="border border-slate-300 p-2.5 align-top text-slate-600 text-[11px]">
+                      {item.requirement}
+                    </td>
+                    <td className="border border-slate-300 p-2.5 text-center align-middle">
+                      <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
+                        item.status === 'pass'
+                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                          : item.status === 'warning'
+                          ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                          : 'bg-red-100 text-red-800 border border-red-300'
+                      }`}>
+                        {item.badge}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* ========================================================================= */}
         {/* SECTION 4: SCHEDULE II OPTICAL FONT METROLOGY & DIMENSION AUDIT */}
         {/* ========================================================================= */}
         {product?.fontAnalysis && product.fontAnalysis.length > 0 && (
-          <div className="mb-8">
+          <div className="mb-8 break-inside-avoid">
             <div className="flex items-center justify-between bg-slate-100 px-3 py-2 border-l-4 border-slate-900 mb-3">
               <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
                 <Ruler className="w-4 h-4 text-primary-700" />
@@ -490,45 +559,46 @@ const Report = () => {
             <div className="overflow-x-auto w-full">
               <table className="w-full text-xs border-collapse border border-slate-300 shadow-sm min-w-[500px]">
                 <thead>
-                <tr className="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider">
-                  <th className="border border-slate-300 p-2.5 text-left">Packaging Element</th>
-                  <th className="border border-slate-300 p-2.5 text-left">Statutory Rule Ref</th>
-                  <th className="border border-slate-300 p-2.5 text-center">Mandatory Min Height</th>
-                  <th className="border border-slate-300 p-2.5 text-center">Measured Optical Height</th>
-                  <th className="border border-slate-300 p-2.5 text-center">Conformity Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {product.fontAnalysis.map((f, i) => (
-                  <tr key={i} className="hover:bg-slate-50/80">
-                    <td className="border border-slate-300 p-2.5 font-bold text-slate-800">{f.field}</td>
-                    <td className="border border-slate-300 p-2.5 font-mono text-primary-800 font-semibold">{f.ruleRef || 'Schedule II'}</td>
-                    <td className="border border-slate-300 p-2.5 text-center font-mono font-medium">
-                      {typeof f.requiredMm === 'number' ? f.requiredMm.toFixed(1) : f.requiredMm} mm
-                    </td>
-                    <td className="border border-slate-300 p-2.5 text-center font-mono font-bold text-slate-900">
-                      {typeof f.measuredMm === 'number' ? f.measuredMm.toFixed(1) : f.measuredMm} mm
-                    </td>
-                    <td className="border border-slate-300 p-2.5 text-center">
-                      <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase ${
-                        f.pass 
-                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' 
-                          : 'bg-red-100 text-red-800 border border-red-300'
-                      }`}>
-                        {f.pass ? 'PASS' : 'SUB-MINIMUM (FAIL)'}
-                      </span>
-                    </td>
+                  <tr className="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider">
+                    <th className="border border-slate-300 p-2.5 text-left">Packaging Element</th>
+                    <th className="border border-slate-300 p-2.5 text-left">Statutory Rule Ref</th>
+                    <th className="border border-slate-300 p-2.5 text-center">Mandatory Min Height</th>
+                    <th className="border border-slate-300 p-2.5 text-center">Measured Optical Height</th>
+                    <th className="border border-slate-300 p-2.5 text-center">Conformity Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {product.fontAnalysis.map((f, i) => (
+                    <tr key={i} className="hover:bg-slate-50/80">
+                      <td className="border border-slate-300 p-2.5 font-bold text-slate-800">{f.field}</td>
+                      <td className="border border-slate-300 p-2.5 font-mono text-primary-800 font-semibold">{f.ruleRef || 'Schedule II'}</td>
+                      <td className="border border-slate-300 p-2.5 text-center font-mono font-medium">
+                        {typeof f.requiredMm === 'number' ? f.requiredMm.toFixed(1) : f.requiredMm} mm
+                      </td>
+                      <td className="border border-slate-300 p-2.5 text-center font-mono font-bold text-slate-900">
+                        {typeof f.measuredMm === 'number' ? f.measuredMm.toFixed(1) : f.measuredMm} mm
+                      </td>
+                      <td className="border border-slate-300 p-2.5 text-center">
+                        <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+                          f.pass 
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' 
+                            : 'bg-red-100 text-red-800 border border-red-300'
+                        }`}>
+                          {f.pass ? 'PASS' : 'SUB-MINIMUM (FAIL)'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
         {/* ========================================================================= */}
         {/* SECTION 5: STATUTORY INFRACTIONS, LEGAL IMPLICATIONS & PENAL PROVISIONS */}
         {/* ========================================================================= */}
-        <div className="mb-8">
+        <div className="mb-8 break-inside-avoid">
           <div className="flex items-center justify-between bg-slate-100 px-3 py-2 border-l-4 border-slate-900 mb-3">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-700" />
@@ -578,7 +648,7 @@ const Report = () => {
         {/* ========================================================================= */}
         {/* SECTION 6: STATUTORY RECOMMENDATION & DIGITAL ENDORSEMENT */}
         {/* ========================================================================= */}
-        <div className="mt-10 border-t-2 border-slate-900 pt-6">
+        <div className="mt-10 border-t-2 border-slate-900 pt-6 break-inside-avoid">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-end">
             
             <div className="space-y-2">
@@ -604,7 +674,7 @@ const Report = () => {
             <div className="text-center sm:text-right space-y-1">
               <div className="inline-block text-center border-b-2 border-slate-800 pb-1 min-w-[200px]">
                 <span className="font-serif italic text-slate-700 text-sm block">Digitally Signed &amp; Authenticated</span>
-                <span className="text-[10px] font-mono text-slate-500 block">CERT-ID: LM-{Math.floor(100000 + Math.random() * 900000)}</span>
+                <span className="text-[10px] font-mono text-slate-500 block">CERT-ID: {certId}</span>
               </div>
               <p className="text-xs font-bold text-slate-900 mt-1">{user?.name || 'Authorized Legal Metrology Inspector'}</p>
               <p className="text-[11px] text-slate-600">Legal Metrology Enforcement Officer (LM-DL-402)</p>
