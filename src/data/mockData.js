@@ -42,7 +42,7 @@ export const mockProducts = [
   },
   {
     id: 'prod_002',
-    name: 'Diet Coke Can 300ml',
+    name: 'Diet Coke Can 200ml',
     brand: 'Coca-Cola',
     category: 'Beverages',
     batchNo: 'CC-DC-881',
@@ -53,14 +53,14 @@ export const mockProducts = [
     pdpAreaCm2: 175,
     imageUrl: '/assets/mock-labels/diet_coke.svg',
     declarations: {
-      mrp: '₹40.00 (Incl. of all taxes)',
-      netWeight: '300 ml (Net Volume)',
+      mrp: '₹30.00 (Incl. of all taxes)',
+      netWeight: '200 ml (Net Volume)',
       manufacturer: 'Hindustan Coca-Cola Beverages Pvt. Ltd., B-91, Mayapuri Ind. Area, New Delhi - 110064',
       countryOfOrigin: 'India',
       expiryDate: 'Best before 6 months from manufacture',
       fssaiNo: '10012011000120',
       customerCare: '1800-208-2653 / indiahelpline@coca-cola.com',
-      unitSalePrice: '₹13.33 / 100 ml'
+      unitSalePrice: '₹15.00 / 100 ml'
     },
     fontAnalysis: [
       { field: 'MRP & Unit Sale Price', requiredMm: 1.5, measuredMm: 2.0, pass: true, ruleRef: 'Schedule II' },
@@ -71,8 +71,8 @@ export const mockProducts = [
     violations: [],
     boundingBoxes: [
       { id: 'box_brand', label: 'Brand & Commodity', value: 'Diet Coke (Carbonated Beverage)', rule: 'Rule 6(1)(b)', status: 'pass', confidence: 99.9, top: 12, left: 16, width: 68, height: 18, fontMm: 12.0, minMm: 3.0 },
-      { id: 'box_net_wt', label: 'Net Quantity', value: 'Net Volume: 300 ml', rule: 'Rule 6(1)(c)', status: 'pass', confidence: 99.4, top: 34, left: 54, width: 38, height: 12, fontMm: 2.6, minMm: 2.0 },
-      { id: 'box_mrp', label: 'MRP & Unit Sale Price', value: 'MRP: ₹40.00 (USP ₹13.33/100ml)', rule: 'Rule 6(1)(e) & 6(1)(ab)', status: 'pass', confidence: 99.1, top: 48, left: 54, width: 38, height: 14, fontMm: 2.0, minMm: 1.5 },
+      { id: 'box_net_wt', label: 'Net Quantity', value: 'Net Volume: 200 ml', rule: 'Rule 6(1)(c)', status: 'pass', confidence: 99.4, top: 34, left: 54, width: 38, height: 12, fontMm: 2.6, minMm: 2.0 },
+      { id: 'box_mrp', label: 'MRP & Unit Sale Price', value: 'MRP: ₹40.00 (USP ₹20.00/100ml)', rule: 'Rule 6(1)(e) & 6(1)(ab)', status: 'pass', confidence: 99.1, top: 48, left: 54, width: 38, height: 14, fontMm: 2.0, minMm: 1.5 },
       { id: 'box_mfr', label: 'Manufacturer Address', value: 'Hindustan Coca-Cola Beverages Pvt. Ltd., New Delhi', rule: 'Rule 6(1)(a)', status: 'pass', confidence: 98.5, top: 66, left: 10, width: 50, height: 16, fontMm: 1.2, minMm: 1.0 },
       { id: 'box_care', label: 'Consumer Helpline', value: '1800-208-2653 / indiahelpline@coca-cola.com', rule: 'Rule 6(1)(f)', status: 'pass', confidence: 98.0, top: 84, left: 10, width: 80, height: 10, fontMm: 1.1, minMm: 1.0 }
     ]

@@ -27,13 +27,13 @@
   <line x1="35" y1="152" x2="345" y2="152" stroke="#e5e7eb" stroke-width="1.5"/>
 
   <text x="35" y="175" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#374151">Net Volume:</text>
-  <text x="155" y="175" font-family="Arial, sans-serif" font-weight="900" font-size="15" fill="#111827">300 ml</text>
+  <text x="155" y="175" font-family="Arial, sans-serif" font-weight="900" font-size="15" fill="#111827">200 ml</text>
 
   <text x="35" y="200" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#374151">Max Retail Price:</text>
   <text x="155" y="200" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#b91c1c">₹ 40.00 <tspan font-size="10" fill="#6b7280">(Incl. of all taxes)</tspan></text>
 
   <text x="35" y="222" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#374151">Unit Sale Price:</text>
-  <text x="155" y="222" font-family="Arial, sans-serif" font-size="11" fill="#111827">₹ 13.33 / 100 ml</text>
+  <text x="155" y="222" font-family="Arial, sans-serif" font-size="11" fill="#111827">₹ 20.00 / 100 ml</text>
 
   <text x="35" y="244" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#374151">Country of Origin:</text>
   <text x="155" y="244" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#15803d">INDIA</text>
