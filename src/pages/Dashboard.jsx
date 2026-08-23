@@ -159,19 +159,31 @@ const Dashboard = () => {
                 <th className="p-4 font-semibold">Brand</th>
                 <th className="p-4 font-semibold">Date</th>
                 <th className="p-4 font-semibold">Score</th>
-                <th className="p-4 font-semibold rounded-tr-lg">Status</th>
+                <th className="p-4 font-semibold">Status</th>
+                <th className="p-4 font-semibold text-right rounded-tr-lg">Action</th>
               </tr>
             </thead>
             <tbody>
-              {mockProducts.slice(0, 5).map((prod, idx) => (
-                <tr key={prod.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+              {mockProducts.slice(0, 5).map((prod) => (
+                <tr 
+                  key={prod.id} 
+                  onClick={() => navigate(`/report/${prod.id}`)}
+                  className="border-b border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer group"
+                >
                   <td className="p-4 text-slate-800 font-semibold flex items-center gap-3">
-                    <div className="w-10 h-10 rounded bg-white flex items-center justify-center overflow-hidden border border-slate-200 shadow-sm">
-                      <span className="text-[10px] text-slate-400 font-bold">IMG</span>
+                    <div className="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center overflow-hidden border border-slate-200 shadow-sm shrink-0 p-0.5">
+                      {prod.imageUrl ? (
+                        <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-contain" />
+                      ) : (
+                        <span className="text-[10px] text-slate-400 font-bold">IMG</span>
+                      )}
                     </div>
-                    {prod.name}
+                    <div>
+                      <span className="text-slate-900 group-hover:text-primary-600 transition-colors font-bold block">{prod.name}</span>
+                      <span className="text-xs text-slate-400 font-mono">Batch: {prod.batchNo}</span>
+                    </div>
                   </td>
-                  <td className="p-4 text-slate-600">{prod.brand}</td>
+                  <td className="p-4 text-slate-600 font-medium">{prod.brand}</td>
                   <td className="p-4 text-slate-500 text-sm font-medium">{new Date(prod.scanDate).toLocaleDateString()}</td>
                   <td className="p-4">
                     <span className={`font-bold ${prod.complianceScore >= 80 ? 'text-success' : prod.complianceScore >= 60 ? 'text-warn' : 'text-danger'}`}>
@@ -184,6 +196,11 @@ const Dashboard = () => {
                       prod.status === 'partial' ? 'badge-warning' : 'badge-danger'
                     }`}>
                       {prod.status}
+                    </span>
+                  </td>
+                  <td className="p-4 text-right">
+                    <span className="text-xs font-bold text-primary-600 group-hover:underline">
+                      View Report →
                     </span>
                   </td>
                 </tr>

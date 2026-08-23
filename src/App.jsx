@@ -20,6 +20,7 @@ function App() {
             <Route element={<PageWrapper />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/scanner" element={<Scanner />} />
+              <Route path="/report" element={<Report />} />
               <Route path="/report/:productId" element={<Report />} />
               <Route path="/history" element={<History />} />
             </Route>

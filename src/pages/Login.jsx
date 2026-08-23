@@ -244,14 +244,14 @@ const Login = () => {
                       ⚠️ Lay's Chips (Violation)
                     </button>
                     <button 
-                      onClick={() => setSelectedDemoTab('atta')}
+                      onClick={() => setSelectedDemoTab('paneer')}
                       className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                        selectedDemoTab === 'atta' 
+                        selectedDemoTab === 'paneer' 
                           ? 'bg-white text-success shadow-sm border border-slate-200' 
                           : 'text-slate-500 hover:text-slate-800'
                       }`}
                     >
-                      ✅ Aashirvaad (Compliant)
+                      ✅ Amul Paneer (Compliant)
                     </button>
                   </div>
 
@@ -264,17 +264,17 @@ const Login = () => {
                         <div>
                           <p className="text-[10px] font-mono text-slate-400 font-bold uppercase">Commodity Sample</p>
                           <h4 className="text-base font-bold text-slate-900">
-                            {selectedDemoTab === 'chips' ? "Potato Chips 26g" : "Whole Wheat Atta 5kg"}
+                            {selectedDemoTab === 'chips' ? "Classic Salted Chips 50g" : "Fresh Paneer 200g"}
                           </h4>
                           <p className="text-xs font-medium text-slate-500">
-                            {selectedDemoTab === 'chips' ? "PepsiCo India Holdings" : "ITC Limited, Kolkata"}
+                            {selectedDemoTab === 'chips' ? "PepsiCo India Holdings" : "GCMMF Ltd. (Amul), Anand"}
                           </p>
                         </div>
                         <div className="text-right">
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                             selectedDemoTab === 'chips' ? 'bg-danger-light text-danger border border-danger/30' : 'bg-success-light text-success border border-success/30'
                           }`}>
-                            {selectedDemoTab === 'chips' ? '60% Non-Compliant' : '100% Compliant'}
+                            {selectedDemoTab === 'chips' ? '55% Non-Compliant' : '100% Compliant'}
                           </span>
                         </div>
                       </div>
@@ -283,13 +283,13 @@ const Login = () => {
                       <div className="my-3 space-y-2">
                         {/* MRP Tag */}
                         <div className="p-1.5 bg-success/10 border border-success rounded flex items-center justify-between text-xs">
-                          <span className="font-mono text-[11px] font-bold text-success">MRP: {selectedDemoTab === 'chips' ? "₹10.00 (Incl. Taxes)" : "₹250.00"}</span>
+                          <span className="font-mono text-[11px] font-bold text-success">MRP: {selectedDemoTab === 'chips' ? "₹20.00 (Incl. Taxes)" : "₹95.00 (USP ₹0.48/g)"}</span>
                           <span className="text-[9px] bg-success text-white px-1.5 rounded font-bold">Rule 6(1)(e) PASS</span>
                         </div>
 
                         {/* Net Quantity Tag */}
                         <div className="p-1.5 bg-success/10 border border-success rounded flex items-center justify-between text-xs">
-                          <span className="font-mono text-[11px] font-bold text-success">Net Wt: {selectedDemoTab === 'chips' ? "26g" : "5 kg"}</span>
+                          <span className="font-mono text-[11px] font-bold text-success">Net Wt: {selectedDemoTab === 'chips' ? "50g" : "200 g"}</span>
                           <span className="text-[9px] bg-success text-white px-1.5 rounded font-bold">Rule 12 PASS</span>
                         </div>
 

@@ -84,8 +84,12 @@ const History = () => {
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded bg-white flex items-center justify-center border border-slate-200 shadow-sm overflow-hidden">
-                         <span className="text-[10px] text-slate-400 font-bold">IMG</span>
+                      <div className="w-12 h-12 rounded-lg bg-slate-900 flex items-center justify-center border border-slate-200 shadow-sm overflow-hidden p-0.5 shrink-0">
+                        {prod.imageUrl ? (
+                          <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-contain" />
+                        ) : (
+                          <span className="text-[10px] text-slate-400 font-bold">LABEL</span>
+                        )}
                       </div>
                       <div>
                         <p className="font-bold text-slate-900">{prod.name}</p>
@@ -121,7 +125,7 @@ const History = () => {
                       onClick={() => navigate(`/report/${prod.id}`)}
                       className="px-3 py-1.5 text-primary-600 hover:text-white hover:bg-primary-600 border border-primary-100 rounded-lg transition-all inline-flex items-center gap-1.5 text-sm font-bold shadow-sm"
                     >
-                      <ExternalLink className="w-4 h-4" /> View
+                      <ExternalLink className="w-4 h-4" /> View Report
                     </button>
                   </td>
                 </tr>

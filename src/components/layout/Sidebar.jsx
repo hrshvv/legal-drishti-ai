@@ -10,7 +10,7 @@ const Sidebar = () => {
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/scanner', icon: ScanLine, label: 'AI Scanner' },
     { path: '/history', icon: History, label: 'Inspection History' },
-    { path: '/report/demo', icon: FileText, label: 'Reports' },
+    { path: '/report', icon: FileText, label: 'Reports' },
   ];
 
   if (role === 'admin') {

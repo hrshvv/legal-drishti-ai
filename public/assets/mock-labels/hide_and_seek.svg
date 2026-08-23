@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="parleBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#451a03" />
+      <stop offset="50%" stop-color="#78350f" />
+      <stop offset="100%" stop-color="#291102" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="450" rx="16" fill="url(#parleBg)"/>
+  
+  <!-- Header -->
+  <rect x="20" y="20" width="560" height="80" rx="10" fill="#ffffff" filter="url(#shadow)"/>
+  <text x="35" y="66" font-family="Arial, sans-serif" font-weight="900" font-size="32" fill="#78350f" letter-spacing="1">Hide &amp; Seek</text>
+  <text x="260" y="52" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#1e1e24">CHOCO CHIP BISCUITS</text>
+  <text x="260" y="74" font-family="Arial, sans-serif" font-size="12" fill="#666666">Real Chocolate Chips • Baked with Care</text>
+  <circle cx="530" cy="60" r="18" fill="none" stroke="#2e7d32" stroke-width="2"/>
+  <circle cx="530" cy="60" r="8" fill="#2e7d32"/>
+
+  <!-- Left Declarations Panel -->
+  <rect x="20" y="115" width="340" height="230" rx="10" fill="#ffffff" fill-opacity="0.95" filter="url(#shadow)"/>
+  <text x="35" y="145" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#111827">STATUTORY DECLARATIONS (PCR 2011)</text>
+  <line x1="35" y1="152" x2="345" y2="152" stroke="#e5e7eb" stroke-width="1.5"/>
+
+  <text x="35" y="175" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#374151">Net Weight:</text>
+  <text x="155" y="175" font-family="Arial, sans-serif" font-weight="900" font-size="15" fill="#111827">120 g</text>
+
+  <text x="35" y="200" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#374151">Max Retail Price:</text>
+  <text x="155" y="200" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#b91c1c">₹ 30.00 <tspan font-size="10" fill="#6b7280">(Incl. of all taxes)</tspan></text>
+
+  <text x="35" y="222" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#374151">Unit Sale Price:</text>
+  <text x="155" y="222" font-family="Arial, sans-serif" font-size="11" fill="#111827">₹ 0.25 / g</text>
+
+  <text x="35" y="244" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#374151">Country of Origin:</text>
+  <text x="155" y="244" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#15803d">INDIA</text>
+
+  <text x="35" y="266" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#374151">FSSAI Lic No:</text>
+  <text x="155" y="266" font-family="monospace" font-size="11" fill="#111827">10013022000225</text>
+
+  <text x="35" y="288" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#374151">Best Before:</text>
+  <text x="155" y="288" font-family="Arial, sans-serif" font-size="10" fill="#4b5563">6 Months from manufacture</text>
+
+  <text x="35" y="310" font-family="Arial, sans-serif" font-weight="bold" font-size="9" fill="#374151">Batch No:</text>
+  <text x="155" y="310" font-family="monospace" font-weight="bold" font-size="10" fill="#1f2937">HS-CC-901</text>
+
+  <!-- Right Panel -->
+  <rect x="375" y="115" width="205" height="230" rx="10" fill="#ffffff" fill-opacity="0.95" filter="url(#shadow)"/>
+  <text x="388" y="140" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#111827">MANUFACTURED BY:</text>
+  <text x="388" y="158" font-family="Arial, sans-serif" font-size="9.5" fill="#374151">
+    <tspan x="388" dy="0">Parle Products Pvt. Ltd.</tspan>
+    <tspan x="388" dy="12">North Level Crossing,</tspan>
+    <tspan x="388" dy="12">Vile Parle East,</tspan>
+    <tspan x="388" dy="12">Mumbai - 400057, MH, India</tspan>
+  </text>
+  <line x1="388" y1="210" x2="565" y2="210" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="388" y="228" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#111827">CUSTOMER HELPLINE:</text>
+  <text x="388" y="244" font-family="Arial, sans-serif" font-size="9" fill="#2563eb">1800-22-7799</text>
+  <text x="388" y="258" font-family="Arial, sans-serif" font-size="9" fill="#2563eb">cs@parle.biz</text>
+
+  <g transform="translate(390, 275)">
+    <rect x="0" y="0" width="175" height="48" fill="#f8fafc" stroke="#e2e8f0"/>
+    <line x1="10" y1="5" x2="10" y2="35" stroke="#000" stroke-width="2"/>
+    <line x1="20" y1="5" x2="20" y2="35" stroke="#000" stroke-width="4"/>
+    <line x1="32" y1="5" x2="32" y2="35" stroke="#000" stroke-width="1"/>
+    <line x1="44" y1="5" x2="44" y2="35" stroke="#000" stroke-width="3"/>
+    <line x1="58" y1="5" x2="58" y2="35" stroke="#000" stroke-width="2"/>
+    <line x1="70" y1="5" x2="70" y2="35" stroke="#000" stroke-width="3"/>
+    <line x1="84" y1="5" x2="84" y2="35" stroke="#000" stroke-width="2"/>
+    <line x1="98" y1="5" x2="98" y2="35" stroke="#000" stroke-width="4"/>
+    <line x1="112" y1="5" x2="112" y2="35" stroke="#000" stroke-width="1"/>
+    <line x1="126" y1="5" x2="126" y2="35" stroke="#000" stroke-width="3"/>
+    <line x1="140" y1="5" x2="140" y2="35" stroke="#000" stroke-width="2"/>
+    <text x="88" y="44" font-family="monospace" font-size="8" text-anchor="middle" fill="#333">8 901719 104033</text>
+  </g>
+
+  <!-- Footer Legal Banner -->
+  <rect x="20" y="360" width="560" height="70" rx="8" fill="#ffffff" fill-opacity="0.95" filter="url(#shadow)"/>
+  <text x="35" y="385" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">GOVT. LEGAL METROLOGY PACKAGED COMMODITIES COMPLIANCE SEAL</text>
+  <text x="35" y="405" font-family="Arial, sans-serif" font-size="9" fill="#475569">Certified compliant with Rule 6(1) Declarations &amp; Schedule II Minimum Height (2.3mm Net Qty, 2.1mm MRP).</text>
+  <rect x="475" y="372" width="90" height="46" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="520" y="392" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#065f46">PASS</text>
+  <text x="520" y="407" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="#047857">100/100 SCORE</text>
+</svg>
