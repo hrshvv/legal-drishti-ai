@@ -1,40 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
   <defs>
-    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#2563eb" />
-      <stop offset="50%" stopColor="#1d4ed8" />
+    <linearGradient id="logoNavyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#1e3a8a" />
       <stop offset="100%" stopColor="#0f172a" />
     </linearGradient>
-    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stopColor="#38bdf8" />
-      <stop offset="50%" stopColor="#818cf8" />
-      <stop offset="100%" stopColor="#38bdf8" />
-    </linearGradient>
-    <linearGradient id="irisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#38bdf8" />
-      <stop offset="100%" stopColor="#2563eb" />
-    </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="1.5" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
   </defs>
+  
+  <g fill="currentColor">
+    <!-- Top 5 Vertical Crown Bars -->
+    <rect x="244" y="108" width="12" height="38" rx="2" fill="#0f213f" />
+    <rect x="222" y="122" width="10" height="24" rx="2" fill="#0f213f" />
+    <rect x="268" y="122" width="10" height="24" rx="2" fill="#0f213f" />
+    <rect x="202" y="129" width="9" height="17" rx="1.5" fill="#0f213f" />
+    <rect x="289" y="129" width="9" height="17" rx="1.5" fill="#0f213f" />
 
-  <!-- Shield Body -->
-  <path d="M32 4L10 12V28C10 43 19.5 54.5 32 60C44.5 54.5 54 43 54 28V12L32 4Z" fill="url(#shieldGrad)" stroke="#38bdf8" stroke-width="1.5" stroke-linejoin="round" />
-  
-  <!-- Outer Eye Shape (Drishti / Vision) -->
-  <path d="M18 31C22 23 27 19 32 19C37 19 42 23 46 31C42 39 37 43 32 43C27 43 22 39 18 31Z" fill="#0f172a" fill-opacity="0.5" stroke="url(#glowGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  
-  <!-- Iris Circle -->
-  <circle cx="32" cy="31" r="7" fill="url(#irisGrad)" filter="url(#glow)" />
-  
-  <!-- Inner Pupil / Center Core -->
-  <circle cx="32" cy="31" r="3" fill="#ffffff" />
-  
-  <!-- Top Center Legal Balance / Crown Notch -->
-  <path d="M32 9V14M29 11.5H35" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" />
-  
-  <!-- AI Scanning Horizontal Target Lines -->
-  <path d="M14 31H17M47 31H50" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+    <!-- Top Lintel Beam -->
+    <path d="M201 155H299V165C299 166.5 297.5 168 296 168H204C202.5 168 201 166.5 201 165V155Z" fill="#0f213f" />
+
+    <!-- Upper Outer Eye Curve (Top Arc) -->
+    <path d="M60 232 C120 150, 200 130, 250 130 C300 130, 380 150, 440 232 C385 168, 305 152, 250 152 C195 152, 115 168, 60 232 Z" fill="#0f213f" />
+    
+    <!-- Lower Outer Eye Curve (Bottom Arc) -->
+    <path d="M60 232 C120 314, 200 334, 250 334 C300 334, 380 314, 440 232 C385 296, 305 312, 250 312 C195 312, 115 296, 60 232 Z" fill="#0f213f" />
+
+    <!-- Central Pillar (Upper Section) -->
+    <rect x="238" y="168" width="24" height="50" fill="#0f213f" />
+
+    <!-- Central Eye (Drishti Core in Pillar) -->
+    <path d="M213 238 C226 218, 240 218, 250 218 C260 218, 274 218, 287 238 C274 258, 260 258, 250 258 C240 258, 226 258, 213 238 Z" fill="#0f213f" />
+    <!-- White Eye Opening -->
+    <path d="M220 238 C230 224, 243 224, 250 224 C257 224, 270 224, 280 238 C270 252, 257 252, 250 252 C243 252, 230 252, 220 238 Z" fill="#ffffff" />
+    <!-- Eye Pupil -->
+    <circle cx="250" cy="238" r="9" fill="#0f213f" />
+
+    <!-- Central Pillar (Lower Section) -->
+    <rect x="238" y="258" width="24" height="64" fill="#0f213f" />
+
+    <!-- Pedestal Base -->
+    <path d="M238 322H262 L278 344 C264 347 236 347 222 344 Z" fill="#0f213f" />
+
+    <!-- Left Balance Scale Strings & Pan -->
+    <path d="M182 174 L138 244 H212 L182 174 Z" stroke="#0f213f" stroke-width="7" stroke-linejoin="round" fill="none" />
+    <path d="M138 245 C138 274, 212 274, 212 245 Z" fill="#0f213f" />
+
+    <!-- Right Balance Scale Strings & Pan -->
+    <path d="M318 174 L288 244 H362 L318 174 Z" stroke="#0f213f" stroke-width="7" stroke-linejoin="round" fill="none" />
+    <path d="M288 245 C288 274, 362 274, 362 245 Z" fill="#0f213f" />
+  </g>
 </svg>

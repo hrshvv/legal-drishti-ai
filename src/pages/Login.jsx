@@ -24,6 +24,7 @@ import {
   Search,
   Check
 } from 'lucide-react';
+import Logo from '../components/common/Logo';
 
 const Login = () => {
   const { login } = useAuth();
@@ -84,9 +85,7 @@ const Login = () => {
           
           {/* Logo & Government Branding */}
           <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
-            <div className="bg-gradient-to-br from-primary-600 to-primary-700 p-2 sm:p-2.5 rounded-xl shadow-md shadow-primary-500/25 flex items-center justify-center shrink-0">
-              <ShieldCheck className="text-white w-5 h-5 sm:w-6 sm:h-6" />
-            </div>
+            <Logo size="sm" variant="badge" />
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <span className="text-base sm:text-xl font-display font-black text-slate-900 tracking-wide truncate">LEGAL DRISHTI</span>
@@ -722,12 +721,14 @@ const Login = () => {
             
             {/* Col 1: System Info */}
             <div className="space-y-4 md:col-span-2">
-              <div className="flex items-center gap-3">
-                <div className="bg-primary-500 p-2 rounded-xl">
-                  <ShieldCheck className="text-white w-6 h-6" />
-                </div>
-                <span className="text-xl font-display font-black tracking-wide text-white">LEGAL DRISHTI</span>
-              </div>
+              <Logo 
+                size="md" 
+                variant="dark" 
+                showText={true} 
+                textColor="text-white" 
+                subtitle="Ministry of Consumer Affairs" 
+                subtextColor="text-slate-400" 
+              />
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
                 Automated compliance inspection and enforcement platform under the Legal Metrology (Packaged Commodities) Rules, 2011. Built for the Smart India Hackathon.
               </p>

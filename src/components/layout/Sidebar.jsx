@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ScanLine, FileText, History, Settings, X, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, ScanLine, FileText, History, Settings, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import Logo from '../common/Logo';
 
 const Sidebar = ({ isOpen, closeMenu }) => {
   const { role } = useAuth();
@@ -62,15 +63,7 @@ const Sidebar = ({ isOpen, closeMenu }) => {
       >
         {/* Drawer Header */}
         <div className="p-4 flex items-center justify-between border-b border-slate-200 bg-slate-50">
-          <div className="flex items-center gap-2.5">
-            <div className="bg-primary-600 p-1.5 rounded-lg shadow-sm">
-              <ShieldCheck className="text-white w-5 h-5" />
-            </div>
-            <div>
-              <span className="font-bold text-slate-900 text-sm">Legal Drishti</span>
-              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Navigation Menu</p>
-            </div>
-          </div>
+          <Logo size="xs" variant="badge" showText={true} subtitle="Navigation Menu" />
           <button 
             onClick={closeMenu} 
             className="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-200 transition-colors"

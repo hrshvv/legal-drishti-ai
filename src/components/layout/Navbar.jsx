@@ -1,7 +1,8 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { LogOut, ShieldCheck, Menu, X } from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../common/Logo';
 
 const Navbar = ({ toggleMobileMenu, isMobileMenuOpen }) => {
   const { user, logout } = useAuth();
@@ -22,13 +23,12 @@ const Navbar = ({ toggleMobileMenu, isMobileMenuOpen }) => {
         >
           {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-slate-700" />}
         </button>
-        <div className="bg-primary-600 p-2 rounded-lg shadow-md shadow-primary-500/20 shrink-0">
-          <ShieldCheck className="text-white w-5 h-5 sm:w-6 sm:h-6" />
-        </div>
-        <div>
-          <h1 className="text-base sm:text-lg font-display font-bold text-slate-900 tracking-wide leading-tight">LEGAL DRISHTI</h1>
-          <p className="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-widest leading-none font-medium mt-0.5">Compliance System</p>
-        </div>
+        <Logo 
+          size="sm" 
+          variant="badge" 
+          showText={true} 
+          subtitle="Compliance System" 
+        />
       </div>
       
       {user && (

@@ -17,6 +17,7 @@ import {
   Camera, 
   Package
 } from 'lucide-react';
+import Logo from '../components/common/Logo';
 
 const Report = () => {
   const { productId } = useParams();
@@ -258,13 +259,8 @@ const Report = () => {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             
             <div className="flex items-center gap-4 text-left">
-              {/* National Emblem Badge */}
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-slate-800 bg-slate-50 flex flex-col items-center justify-center p-1 shrink-0 shadow-sm">
-                <Scale className="w-5 h-5 sm:w-6 sm:h-6 text-slate-900 mb-0.5" />
-                <span className="text-[7px] font-black uppercase text-slate-900 tracking-tighter leading-none text-center">
-                  GOVT OF INDIA
-                </span>
-              </div>
+              {/* Official Legal Drishti Emblem Badge */}
+              <Logo size="lg" variant="badge" className="w-16 h-16 rounded-2xl shadow-sm border-slate-300" />
 
               <div>
                 <h1 className="text-lg sm:text-xl md:text-2xl font-black uppercase tracking-wide text-slate-900 font-display leading-tight">
