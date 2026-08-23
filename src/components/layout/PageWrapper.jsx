@@ -9,18 +9,24 @@ const PageWrapper = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-surface-50 text-slate-800 flex flex-col selection:bg-primary-500 selection:text-white relative overflow-hidden">
-      <Navbar toggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
-      <div className="flex flex-1 relative w-full h-[calc(100vh-4rem)]">
+    <div className="min-h-screen bg-surface-50 text-slate-800 flex flex-col selection:bg-primary-500 selection:text-white w-full">
+      <Navbar 
+        toggleMobileMenu={() => setIsMobileMenuOpen(prev => !prev)} 
+        isMobileMenuOpen={isMobileMenuOpen}
+      />
+      <div className="flex flex-1 relative w-full">
         <Sidebar isOpen={isMobileMenuOpen} closeMenu={() => setIsMobileMenuOpen(false)} />
-        {/* Mobile Overlay */}
+        
+        {/* Mobile Backdrop Overlay */}
         {isMobileMenuOpen && (
           <div 
-            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 md:hidden"
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden"
             onClick={() => setIsMobileMenuOpen(false)}
-          ></div>
+            aria-hidden="true"
+          />
         )}
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto h-full bg-surface-50 min-w-0">
+        
+        <main className="flex-1 p-3 sm:p-5 md:p-6 lg:p-8 overflow-y-auto min-w-0 w-full bg-surface-50">
           {children || <Outlet />}
         </main>
       </div>
