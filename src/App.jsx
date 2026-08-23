@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Scanner from './pages/Scanner';
 import Report from './pages/Report';
 import History from './pages/History';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/report" element={<Report />} />
               <Route path="/report/:productId" element={<Report />} />
               <Route path="/history" element={<History />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
           </Routes>
         </Router>
