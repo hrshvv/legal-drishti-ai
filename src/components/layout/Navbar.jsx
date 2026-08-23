@@ -13,29 +13,29 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="h-16 bg-navy-800 border-b border-white/10 flex items-center justify-between px-6 sticky top-0 z-50">
+    <nav className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-50 shadow-sm">
       <div className="flex items-center gap-3">
-        <div className="bg-gold/20 p-2 rounded-lg">
-          <ShieldCheck className="text-gold w-6 h-6" />
+        <div className="bg-primary-600 p-2 rounded-lg shadow-md shadow-primary-500/20">
+          <ShieldCheck className="text-white w-6 h-6" />
         </div>
         <div>
-          <h1 className="text-lg font-display font-bold text-white tracking-wide">LEGAL DRISHTI</h1>
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest leading-none">Compliance & Inspection System</p>
+          <h1 className="text-lg font-display font-bold text-slate-900 tracking-wide leading-tight">LEGAL DRISHTI</h1>
+          <p className="text-[10px] text-slate-500 uppercase tracking-widest leading-none font-medium mt-0.5">Compliance System</p>
         </div>
       </div>
       
       {user && (
         <div className="flex items-center gap-4">
-          <div className="text-right">
-            <p className="text-sm font-semibold text-white">{user.name}</p>
-            <p className="text-xs text-gray-400">{user.id}</p>
+          <div className="text-right hidden sm:block">
+            <p className="text-sm font-bold text-slate-800">{user.name}</p>
+            <p className="text-xs text-slate-500 font-medium">{user.id}</p>
           </div>
-          <div className="w-10 h-10 rounded-full bg-teal/20 border border-teal/30 flex items-center justify-center text-teal font-bold">
+          <div className="w-10 h-10 rounded-full bg-primary-100 border border-primary-200 flex items-center justify-center text-primary-700 font-bold shadow-sm">
             {user.name.charAt(0)}
           </div>
           <button 
             onClick={handleLogout}
-            className="ml-2 p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+            className="ml-2 p-2 text-slate-400 hover:text-danger hover:bg-danger-light/50 rounded-lg transition-colors"
             title="Logout"
           >
             <LogOut className="w-5 h-5" />

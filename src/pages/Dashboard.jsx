@@ -20,23 +20,23 @@ const trendData = [
 
 const violationData = [
   { name: 'Missing MRP', value: 35 },
-  { name: 'Small Font Size', value: 25 },
-  { name: 'No Mfr Address', value: 20 },
-  { name: 'Missing Origin', value: 10 },
+  { name: 'Small Font', value: 25 },
+  { name: 'No Address', value: 20 },
+  { name: 'No Origin', value: 10 },
   { name: 'Other', value: 10 },
 ];
 
-const COLORS = ['#ff4757', '#ffa502', '#00d4aa', '#f5a623', '#8b9bb4'];
+const COLORS = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#94a3b8'];
 
-const KpiCard = ({ title, value, icon: Icon, color, subtext }) => (
+const KpiCard = ({ title, value, icon: Icon, colorClass, subtext, bgColor }) => (
   <div className="glass-card p-6 flex items-start justify-between animate-fade-up">
     <div>
-      <p className="text-gray-400 text-sm font-medium mb-1">{title}</p>
-      <h3 className="text-3xl font-display font-bold text-white mb-2">{value}</h3>
-      <p className={`text-xs ${color}`}>{subtext}</p>
+      <p className="text-slate-500 text-sm font-semibold mb-1 uppercase tracking-wide">{title}</p>
+      <h3 className="text-3xl font-display font-bold text-slate-900 mb-2">{value}</h3>
+      <p className={`text-xs font-medium ${colorClass}`}>{subtext}</p>
     </div>
-    <div className={`p-3 rounded-lg ${color.replace('text-', 'bg-').replace('/80', '/10')} bg-opacity-10`}>
-      <Icon className={`w-6 h-6 ${color.split(' ')[0]}`} />
+    <div className={`p-4 rounded-xl ${bgColor}`}>
+      <Icon className={`w-7 h-7 ${colorClass}`} />
     </div>
   </div>
 );
@@ -47,13 +47,13 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
         <div>
-          <h2 className="text-2xl font-display font-bold text-white">Dashboard Overview</h2>
-          <p className="text-gray-400 text-sm">Welcome back, {user?.name}</p>
+          <h2 className="text-2xl font-display font-bold text-slate-900">Dashboard Overview</h2>
+          <p className="text-slate-500 font-medium">Welcome back, {user?.name}</p>
         </div>
         {role === 'inspector' && (
-          <button onClick={() => navigate('/scanner')} className="btn-primary">
+          <button onClick={() => navigate('/scanner')} className="btn-primary shadow-primary-500/30">
             <FileSearch className="w-5 h-5" />
             New AI Scan
           </button>
@@ -66,28 +66,32 @@ const Dashboard = () => {
           title="Inspections Today" 
           value="47" 
           icon={FileSearch} 
-          color="text-teal" 
+          colorClass="text-primary-600" 
+          bgColor="bg-primary-50"
           subtext="+12% from yesterday" 
         />
         <KpiCard 
-          title="Non-Compliant Found" 
+          title="Non-Compliant" 
           value="18" 
           icon={AlertTriangle} 
-          color="text-danger" 
+          colorClass="text-danger" 
+          bgColor="bg-danger-light/50"
           subtext="Requires action" 
         />
         <KpiCard 
-          title="Avg. Compliance Rate" 
+          title="Compliance Rate" 
           value="67.3%" 
           icon={CheckCircle} 
-          color="text-gold" 
+          colorClass="text-success" 
+          bgColor="bg-success-light/50"
           subtext="Across all categories" 
         />
         <KpiCard 
           title="Pending Reports" 
           value="9" 
           icon={Clock} 
-          color="text-warn" 
+          colorClass="text-warn" 
+          bgColor="bg-warn-light/50"
           subtext="Drafts needing signature" 
         />
       </div>
@@ -95,45 +99,46 @@ const Dashboard = () => {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="glass-card p-6 lg:col-span-2">
-          <h3 className="text-lg font-bold text-white mb-4">Weekly Inspection Trend</h3>
-          <div className="h-64 w-full">
+          <h3 className="text-lg font-bold text-slate-800 mb-6">Weekly Inspection Trend</h3>
+          <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={trendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                <XAxis dataKey="name" stroke="#6b7280" tick={{fill: '#6b7280', fontSize: 12}} />
-                <YAxis stroke="#6b7280" tick={{fill: '#6b7280', fontSize: 12}} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                <XAxis dataKey="name" stroke="#64748b" tick={{fill: '#64748b', fontSize: 12}} axisLine={false} tickLine={false} />
+                <YAxis stroke="#64748b" tick={{fill: '#64748b', fontSize: 12}} axisLine={false} tickLine={false} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f1629', borderColor: '#1f2937', borderRadius: '8px' }}
-                  itemStyle={{ color: '#fff' }}
+                  contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  itemStyle={{ color: '#1e293b', fontWeight: 'bold' }}
                 />
-                <Legend />
-                <Bar dataKey="scans" name="Total Scans" fill="#00d4aa" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="violations" name="Violations Found" fill="#ff4757" radius={[4, 4, 0, 0]} />
+                <Legend wrapperStyle={{ paddingTop: '20px' }}/>
+                <Bar dataKey="scans" name="Total Scans" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                <Bar dataKey="violations" name="Violations Found" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         <div className="glass-card p-6">
-          <h3 className="text-lg font-bold text-white mb-4">Violation Breakdown</h3>
-          <div className="h-64 w-full">
+          <h3 className="text-lg font-bold text-slate-800 mb-2">Violation Breakdown</h3>
+          <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={violationData}
-                  innerRadius={60}
-                  outerRadius={80}
+                  innerRadius={65}
+                  outerRadius={90}
                   paddingAngle={5}
                   dataKey="value"
+                  stroke="none"
                 >
                   {violationData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f1629', borderColor: '#1f2937', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 />
-                <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ fontSize: '12px' }}/>
+                <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ fontSize: '13px', paddingTop: '10px' }}/>
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -141,39 +146,39 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="glass-card p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-bold text-white">Recent Inspections</h3>
-          <button onClick={() => navigate('/history')} className="text-gold text-sm hover:underline">View All</button>
+      <div className="glass-card">
+        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+          <h3 className="text-lg font-bold text-slate-800">Recent Inspections</h3>
+          <button onClick={() => navigate('/history')} className="text-primary-600 font-semibold text-sm hover:text-primary-700 hover:underline">View All</button>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
+        <div className="overflow-x-auto p-2">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="text-gray-400 text-sm border-b border-white/10">
-                <th className="pb-3 font-medium">Product</th>
-                <th className="pb-3 font-medium">Brand</th>
-                <th className="pb-3 font-medium">Date</th>
-                <th className="pb-3 font-medium">Score</th>
-                <th className="pb-3 font-medium">Status</th>
+              <tr className="text-slate-500 text-xs uppercase tracking-wider bg-slate-50">
+                <th className="p-4 font-semibold rounded-tl-lg">Product</th>
+                <th className="p-4 font-semibold">Brand</th>
+                <th className="p-4 font-semibold">Date</th>
+                <th className="p-4 font-semibold">Score</th>
+                <th className="p-4 font-semibold rounded-tr-lg">Status</th>
               </tr>
             </thead>
             <tbody>
-              {mockProducts.slice(0, 5).map(prod => (
-                <tr key={prod.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="py-4 text-white font-medium flex items-center gap-3">
-                    <div className="w-10 h-10 rounded bg-navy-800 flex items-center justify-center overflow-hidden border border-white/10">
-                      <span className="text-xs text-gray-500">IMG</span>
+              {mockProducts.slice(0, 5).map((prod, idx) => (
+                <tr key={prod.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+                  <td className="p-4 text-slate-800 font-semibold flex items-center gap-3">
+                    <div className="w-10 h-10 rounded bg-white flex items-center justify-center overflow-hidden border border-slate-200 shadow-sm">
+                      <span className="text-[10px] text-slate-400 font-bold">IMG</span>
                     </div>
                     {prod.name}
                   </td>
-                  <td className="py-4 text-gray-300">{prod.brand}</td>
-                  <td className="py-4 text-gray-400 text-sm">{new Date(prod.scanDate).toLocaleDateString()}</td>
-                  <td className="py-4">
-                    <span className={`font-bold ${prod.complianceScore >= 80 ? 'text-teal' : prod.complianceScore >= 60 ? 'text-warn' : 'text-danger'}`}>
+                  <td className="p-4 text-slate-600">{prod.brand}</td>
+                  <td className="p-4 text-slate-500 text-sm font-medium">{new Date(prod.scanDate).toLocaleDateString()}</td>
+                  <td className="p-4">
+                    <span className={`font-bold ${prod.complianceScore >= 80 ? 'text-success' : prod.complianceScore >= 60 ? 'text-warn' : 'text-danger'}`}>
                       {prod.complianceScore}%
                     </span>
                   </td>
-                  <td className="py-4">
+                  <td className="p-4">
                     <span className={`badge ${
                       prod.status === 'compliant' ? 'badge-success' : 
                       prod.status === 'partial' ? 'badge-warning' : 'badge-danger'

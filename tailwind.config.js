@@ -7,29 +7,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: {
-          DEFAULT: '#0a0e1a',
-          800: '#0f1629',
-          700: '#151d35'
+        primary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
         },
-        gold: {
-          DEFAULT: '#f5a623',
-          light: '#fbbf24'
+        surface: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          white: '#ffffff',
         },
-        teal: {
-          DEFAULT: '#00d4aa',
-          dark: '#00a88a'
+        success: {
+          DEFAULT: '#10b981', // Emerald
+          light: '#d1fae5'
         },
         danger: {
-          DEFAULT: '#ff4757',
-          dark: '#cc2836'
+          DEFAULT: '#ef4444', // Red
+          light: '#fee2e2'
         },
         warn: {
-          DEFAULT: '#ffa502'
+          DEFAULT: '#f59e0b', // Amber
+          light: '#fef3c7'
         },
         glass: {
-          DEFAULT: 'rgba(255, 255, 255, 0.04)',
-          strong: 'rgba(255, 255, 255, 0.08)'
+          DEFAULT: 'rgba(255, 255, 255, 0.7)',
+          strong: 'rgba(255, 255, 255, 0.9)'
         }
       },
       fontFamily: {
@@ -60,6 +70,10 @@ export default {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(-100%)' }
         }
+      },
+      boxShadow: {
+        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+        'glow': '0 0 15px rgba(59, 130, 246, 0.5)',
       }
     },
   },

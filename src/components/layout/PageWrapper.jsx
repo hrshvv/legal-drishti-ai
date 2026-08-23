@@ -12,11 +12,11 @@ const PageWrapper = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-navy text-white flex flex-col">
+    <div className="min-h-screen bg-surface-50 text-slate-800 flex flex-col">
       <Navbar />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="flex-1 p-6 overflow-y-auto h-[calc(100vh-4rem)]">
+        <main className="flex-1 p-6 md:p-8 overflow-y-auto h-[calc(100vh-4rem)]">
           {children || <Outlet />}
         </main>
       </div>
