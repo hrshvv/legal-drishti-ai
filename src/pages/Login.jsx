@@ -359,7 +359,7 @@ const Login = () => {
               Complete End-to-End Compliance Technology
             </p>
             <p className="text-slate-600 font-medium text-base">
-              Engineered specifically for enforcement officers to eliminate manual measuring tapes, tedious declaration checklists, and subjective violations.
+              Automated inspection tools built for fast, objective compliance verification.
             </p>
           </div>
 
@@ -373,7 +373,7 @@ const Login = () => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Automated Declaration OCR</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Deep-learning optical character recognition detects and classifies all 9 mandatory packaging declarations defined under Rule 6 of the 2011 Rules.
+                  AI OCR detects and extracts all mandatory packaging declarations under Rule 6.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-primary-600">
@@ -389,7 +389,7 @@ const Login = () => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Font Height in Millimeters</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Calculates absolute numeral and font dimensions to verify strict conformity with Schedule II minimum millimeter height standards.
+                  Measures numeral and text height to verify Schedule II millimeter standards.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-blue-600">
@@ -405,7 +405,7 @@ const Login = () => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Violation Classifier</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Identifies missing fields, misleading claims, non-standard unit symbols (e.g. gms vs g), and improper declaration placements in real time.
+                  Flags missing fields, invalid units, and non-compliant placements instantly.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-danger">
@@ -421,7 +421,7 @@ const Login = () => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Evidence Locker & Photo Vault</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Attaches unedited high-resolution inspection photographs, geo-coordinates, batch codes, and inspector timestamps for legal audit readiness.
+                  Stores timestamped high-res photos and batch data for audit trails.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-emerald-600">
@@ -437,7 +437,7 @@ const Login = () => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Instant PDF Legal Reports</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Produces official Ministry-formatted compliance certificates or Section 18 Show-Cause Notices with digital signature support in one click.
+                  Generates official compliance certificates and notices in one click.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-amber-600">
@@ -453,7 +453,7 @@ const Login = () => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Enforcement Dashboard</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Centralized supervisory dashboard tracking regional inspection velocity, repeat offender manufacturers, and commodity compliance trends.
+                  Tracks regional inspections, repeat offenders, and compliance trends.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-purple-600">
