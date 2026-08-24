@@ -28,6 +28,7 @@ const Navbar = ({ toggleMobileMenu, isMobileMenuOpen }) => {
           variant="badge" 
           showText={true} 
           subtitle="Compliance System" 
+          to="/"
         />
       </div>
       

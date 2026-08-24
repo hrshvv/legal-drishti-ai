@@ -84,11 +84,19 @@ const Login = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-0 sm:h-20 flex items-center justify-between gap-2">
           
           {/* Logo & Government Branding */}
-          <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-2 sm:gap-3.5 min-w-0 group cursor-pointer select-none transition-transform active:scale-[0.98]"
+            title="Legal Drishti Home"
+          >
             <Logo size="sm" variant="badge" />
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-xl font-display font-black text-slate-900 tracking-wide truncate">LEGAL DRISHTI</span>
+                <span className="text-base sm:text-xl font-display font-black text-slate-900 group-hover:text-primary-600 transition-colors tracking-wide truncate">LEGAL DRISHTI</span>
                 <span className="hidden sm:inline-block bg-primary-100 text-primary-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary-200 uppercase tracking-wider shrink-0">
                   AI v2.4
                 </span>
@@ -97,7 +105,7 @@ const Login = () => {
                 Dept. of Consumer Affairs • Govt. of India
               </p>
             </div>
-          </div>
+          </a>
 
           {/* Center Navigation Links (Hidden on small screens) */}
           <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600">

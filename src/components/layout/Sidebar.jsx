@@ -63,7 +63,14 @@ const Sidebar = ({ isOpen, closeMenu }) => {
       >
         {/* Drawer Header */}
         <div className="p-4 flex items-center justify-between border-b border-slate-200 bg-slate-50">
-          <Logo size="xs" variant="badge" showText={true} subtitle="Navigation Menu" />
+          <Logo 
+            size="xs" 
+            variant="badge" 
+            showText={true} 
+            subtitle="Navigation Menu" 
+            to="/"
+            onClick={closeMenu}
+          />
           <button 
             onClick={closeMenu} 
             className="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-200 transition-colors"
