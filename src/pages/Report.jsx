@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockProducts, generateCustomImageAnalysis } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
@@ -15,7 +15,10 @@ import {
   Scale, 
   FileText, 
   Camera, 
-  Package
+  Package,
+  Edit3,
+  PenTool,
+  Eraser
 } from 'lucide-react';
 import Logo from '../components/common/Logo';
 
@@ -25,6 +28,70 @@ const Report = () => {
   const { activeProduct, scanHistory } = useAppContext();
   const navigate = useNavigate();
   const reportRef = useRef();
+  const canvasRef = useRef(null);
+
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isDrawingMode, setIsDrawingMode] = useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  // Resize canvas to match report dimensions when drawing mode is toggled or window resizes
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      if (reportRef.current && canvasRef.current) {
+        const { width, height } = reportRef.current.getBoundingClientRect();
+        canvasRef.current.width = width;
+        canvasRef.current.height = height;
+      }
+    };
+    
+    if (isDrawingMode) {
+      updateCanvasSize();
+      window.addEventListener('resize', updateCanvasSize);
+    }
+    return () => window.removeEventListener('resize', updateCanvasSize);
+  }, [isDrawingMode]);
+
+  const startDrawing = (e) => {
+    if (!isDrawingMode || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    setIsDrawing(true);
+  };
+
+  const draw = (e) => {
+    if (!isDrawing || !isDrawingMode || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#ef4444'; // Red pen
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    if (!isDrawingMode || !canvasRef.current) return;
+    const ctx = canvasRef.current.getContext('2d');
+    ctx.closePath();
+    setIsDrawing(false);
+  };
+  
+  const clearCanvas = () => {
+    if (canvasRef.current) {
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
+  };
 
   // Find product from activeProduct, scanHistory, mockProducts, or fallback
   const product = useMemo(() => {
@@ -229,12 +296,36 @@ const Report = () => {
         </div>
 
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
+          <button
+            onClick={() => { setIsEditMode(!isEditMode); if(!isEditMode) setIsDrawingMode(false); }}
+            className={`py-2 px-3 text-sm shadow-sm flex items-center gap-1.5 rounded-lg border transition-colors ${isEditMode ? 'bg-primary-50 border-primary-300 text-primary-700' : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-700'}`}
+          >
+            <Edit3 className="w-4 h-4" /> <span className="hidden sm:inline">{isEditMode ? 'Editing On' : 'Edit Text'}</span>
+          </button>
+          
+          <button
+            onClick={() => { setIsDrawingMode(!isDrawingMode); if(!isDrawingMode) setIsEditMode(false); }}
+            className={`py-2 px-3 text-sm shadow-sm flex items-center gap-1.5 rounded-lg border transition-colors ${isDrawingMode ? 'bg-primary-50 border-primary-300 text-primary-700' : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-700'}`}
+          >
+            <PenTool className="w-4 h-4" /> <span className="hidden sm:inline">{isDrawingMode ? 'Drawing On' : 'Draw'}</span>
+          </button>
+
+          {isDrawingMode && (
+            <button
+              onClick={clearCanvas}
+              className="py-2 px-3 text-sm bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 shadow-sm flex items-center gap-1.5 rounded-lg"
+              title="Clear Drawing"
+            >
+              <Eraser className="w-4 h-4" /> <span className="hidden sm:inline">Clear</span>
+            </button>
+          )}
+
           <button 
             onClick={handleDownloadJSON} 
             className="btn-outline py-2 px-3 text-sm bg-white hover:bg-slate-50 border-slate-300 text-slate-700 shadow-sm flex items-center gap-1.5"
             title="Download machine-readable JSON data"
           >
-            <Download className="w-4 h-4 text-slate-600" /> <span>Export JSON</span>
+            <Download className="w-4 h-4 text-slate-600" /> <span className="hidden sm:inline">Export JSON</span>
           </button>
           
           <button 
@@ -250,8 +341,26 @@ const Report = () => {
       <div 
         className="bg-white text-slate-900 p-6 sm:p-8 md:p-12 rounded-2xl shadow-xl relative border border-slate-300 print:p-0 print:border-none print:shadow-none font-sans"
         ref={reportRef}
+        style={{ userSelect: isDrawingMode ? 'none' : 'auto' }}
       >
         
+        {/* Drawing Canvas Overlay */}
+        <canvas
+          ref={canvasRef}
+          onPointerDown={startDrawing}
+          onPointerMove={draw}
+          onPointerUp={stopDrawing}
+          onPointerLeave={stopDrawing}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 50,
+            pointerEvents: isDrawingMode ? 'auto' : 'none',
+            touchAction: 'none'
+          }}
+        />
+
         {/* ========================================================================= */}
         {/* HEADER: GOVT. OF INDIA STATUTORY LETTERHEAD */}
         {/* ========================================================================= */}
@@ -317,15 +426,15 @@ const Report = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs bg-slate-50/70 p-4 rounded-xl border border-slate-200">
             <div className="space-y-1.5">
-              <p><span className="text-slate-500 font-semibold">Commodity Name:</span> <strong className="text-slate-900 text-sm block">{product?.name}</strong></p>
-              <p><span className="text-slate-500 font-semibold">Trade Brand / Mark:</span> <strong className="text-slate-800">{product?.brand}</strong></p>
-              <p><span className="text-slate-500 font-semibold">Product Category:</span> <span className="bg-slate-200 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold">{product?.category}</span></p>
+              <p><span className="text-slate-500 font-semibold">Commodity Name:</span> <strong className="text-slate-900 text-sm block" contentEditable={isEditMode} suppressContentEditableWarning>{product?.name}</strong></p>
+              <p><span className="text-slate-500 font-semibold">Trade Brand / Mark:</span> <strong className="text-slate-800" contentEditable={isEditMode} suppressContentEditableWarning>{product?.brand}</strong></p>
+              <p><span className="text-slate-500 font-semibold">Product Category:</span> <span className="bg-slate-200 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold" contentEditable={isEditMode} suppressContentEditableWarning>{product?.category}</span></p>
             </div>
 
             <div className="space-y-1.5">
-              <p><span className="text-slate-500 font-semibold">Batch / Lot Number:</span> <strong className="font-mono text-slate-900 block">{product?.batchNo}</strong></p>
-              <p><span className="text-slate-500 font-semibold">Packaging Type:</span> <strong className="text-slate-800">{product?.packageType || 'Flexible Multi-Layer Pouch'}</strong></p>
-              <p><span className="text-slate-500 font-semibold">PDP Surface Area (A):</span> <strong className="font-mono text-primary-700 font-bold">{product?.pdpAreaCm2 || 220} cm²</strong> <span className="text-[10px] text-slate-500">(Calculated under Rule 7)</span></p>
+              <p><span className="text-slate-500 font-semibold">Batch / Lot Number:</span> <strong className="font-mono text-slate-900 block" contentEditable={isEditMode} suppressContentEditableWarning>{product?.batchNo}</strong></p>
+              <p><span className="text-slate-500 font-semibold">Packaging Type:</span> <strong className="text-slate-800" contentEditable={isEditMode} suppressContentEditableWarning>{product?.packageType || 'Flexible Multi-Layer Pouch'}</strong></p>
+              <p><span className="text-slate-500 font-semibold">PDP Surface Area (A):</span> <strong className="font-mono text-primary-700 font-bold" contentEditable={isEditMode} suppressContentEditableWarning>{product?.pdpAreaCm2 || 220} cm²</strong> <span className="text-[10px] text-slate-500">(Calculated under Rule 7)</span></p>
             </div>
 
             <div className="space-y-2 border-t md:border-t-0 md:border-l border-slate-200 md:pl-4 flex flex-col justify-center">
@@ -505,7 +614,7 @@ const Report = () => {
                       <strong className="text-slate-900 block">{item.label}</strong>
                       <span className="text-[10px] font-mono text-primary-700 font-bold">{item.rule} ({item.actRef})</span>
                     </td>
-                    <td className="border border-slate-300 p-2.5 align-top font-mono text-slate-800">
+                    <td className="border border-slate-300 p-2.5 align-top font-mono text-slate-800" contentEditable={isEditMode} suppressContentEditableWarning>
                       {item.value === 'NOT DECLARED' ? (
                         <span className="text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded border border-red-200 inline-block">
                           ❌ MISSING / NOT DECLARED
@@ -619,7 +728,7 @@ const Report = () => {
                     </span>
                   </div>
 
-                  <p className="text-slate-800 font-medium leading-relaxed">{v.description}</p>
+                  <p className="text-slate-800 font-medium leading-relaxed" contentEditable={isEditMode} suppressContentEditableWarning>{v.description}</p>
                   
                   <div className="border-t border-red-200 pt-2 mt-1 text-[11px] text-red-900 flex flex-wrap justify-between gap-2">
                     <span><strong>Penal Provision:</strong> Section 36(1) penalty liability up to ₹25,000 for initial non-compliance.</span>
@@ -655,7 +764,7 @@ const Report = () => {
               <div className={`p-3.5 border-2 rounded-xl text-center ${
                 product?.status === 'compliant' ? 'border-emerald-600 bg-emerald-50 text-emerald-900' :
                 product?.status === 'partial' ? 'border-amber-600 bg-amber-50 text-amber-900' : 'border-red-600 bg-red-50 text-red-900'
-              }`}>
+              }`} contentEditable={isEditMode} suppressContentEditableWarning>
                 <p className="text-sm font-black uppercase tracking-widest">
                   {product?.status === 'compliant' ? '✔ UNCONDITIONAL CLEARANCE / CERTIFIED' :
                    product?.status === 'partial' ? '⚠ 15-DAY RECTIFICATION NOTICE ISSUED' : '❌ SHOW CAUSE NOTICE UNDER SECTION 18(1)'}
