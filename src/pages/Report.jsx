@@ -33,6 +33,8 @@ const Report = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDrawingMode, setIsDrawingMode] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [brushColor, setBrushColor] = useState('#ef4444');
+  const [brushSize, setBrushSize] = useState(2);
 
   // Resize canvas to match report dimensions when drawing mode is toggled or window resizes
   useEffect(() => {
@@ -72,9 +74,9 @@ const Report = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    ctx.lineWidth = 2;
+    ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#ef4444'; // Red pen
+    ctx.strokeStyle = brushColor;
     ctx.lineTo(x, y);
     ctx.stroke();
   };
@@ -309,6 +311,27 @@ const Report = () => {
           >
             <PenTool className="w-4 h-4" /> <span className="hidden sm:inline">{isDrawingMode ? 'Drawing On' : 'Draw'}</span>
           </button>
+
+          {isDrawingMode && (
+            <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-lg px-2 py-1 shadow-sm">
+              <input 
+                type="color" 
+                value={brushColor} 
+                onChange={(e) => setBrushColor(e.target.value)} 
+                className="w-6 h-6 p-0 border-0 rounded cursor-pointer"
+                title="Brush Color"
+              />
+              <input 
+                type="range" 
+                min="1" 
+                max="20" 
+                value={brushSize} 
+                onChange={(e) => setBrushSize(parseInt(e.target.value))} 
+                className="w-20 accent-primary-600"
+                title="Brush Size"
+              />
+            </div>
+          )}
 
           {isDrawingMode && (
             <button
